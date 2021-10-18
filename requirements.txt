@@ -1,0 +1,5 @@
+tortoise-orm
+aerich
+vk_api
+asyncpg
+aiohttp~=3.7.4.post0
