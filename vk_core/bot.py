@@ -16,15 +16,14 @@ class VkBot:
 
     async def main_handler(self):
         while True:
-            # try:
-            for event in await self.longpoll.check():
-                if event.type == VkBotEventType.MESSAGE_NEW and event.message and event.message['text'][0] == '/':
-                    user = await self.load_user(event.message['peer_id'])
-                    await self.handle_command(user, event.message['text'][1:])
+            try:
+                for event in await self.longpoll.check():
+                    if event.type == VkBotEventType.MESSAGE_NEW and event.message and event.message['text'][0] == '/':
+                        user = await self.load_user(event.message['peer_id'])
+                        await self.handle_command(user, event.message['text'][1:])
 
-            #
-            # except Exception as ex:
-            #     log('main_handler', ex)
+            except Exception as ex:
+                log('main_handler', ex)
 
     async def load_user(self, user_id):
         user = await User.filter(id=user_id)
