@@ -39,7 +39,7 @@ class VkBot:
         stage = self.dialogs[user.stage] if len(self.dialogs) > user.stage + 1 else\
             {'keys': [message], 'answer': {'message': 'Вы уже прошли квест'}}
 
-        if message not in stage['keys']:
+        if message.lower() not in stage['keys']:
             self.api.messages.send(peer_id=user.id, random_id=0, message='Неверная команда')
             return
 
@@ -47,26 +47,4 @@ class VkBot:
         user.stage += 1
         await user.save()
 
-        if user.stage == len(self.dialogs):
-            await self.last_stage(user)
-        else:
-            self.api.messages.send(peer_id=user.id, random_id=0, **stage['answer'])
-
-    async def last_stage(self, user):
-        if not await StageEnd.filter(stage=len(self.dialogs)).exists():
-            self.api.messages.send(peer_id=user.id, random_id=0, message='\n'.join([
-                '1-ым: Поздравляем вы первые завершили наш отбор!',
-                'Благодарим вас за участие и вам полагается главный приз.',
-                'Приходите за ним. 56.842513, 60.655354',
-                '',
-                'До новых встреч?)'
-            ]))
-
-        else:
-            self.api.messages.send(peer_id=user.id, random_id=0, message='\n'.join([
-                'Поздравляем, вы завершили наш отбор. Благодарим вас за участие.',
-                'Другая команда оказалась быстрее вас, но вам также полагает приз.',
-                'Приходите за ним. 56.842513, 60.655354',
-                '',
-                'До новых встреч?)'
-            ]))
+        self.api.messages.send(peer_id=user.id, random_id=0, **stage['answer'])
