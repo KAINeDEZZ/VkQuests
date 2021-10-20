@@ -1,6 +1,6 @@
 import json
 
-with open('keys.json', 'r') as file:
+with open('keys.json', 'r', encoding='UTF8') as file:
     __keys = json.load(file)
 
 TORTOISE_ORM = {
