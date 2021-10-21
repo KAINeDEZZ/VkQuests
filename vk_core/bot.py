@@ -36,9 +36,11 @@ class VkBot:
         return user
 
     async def handle_command(self, user, message):
-        stage = self.dialogs[user.stage] if len(self.dialogs) > user.stage + 1 else\
-            {'keys': [message], 'answer': {'message': 'Вы уже прошли квест'}}
+        if len(self.dialogs) <= user.stage:
+            self.api.messages.send(peer_id=user.id, random_id=0, message='Вы уже прошли квест')
+            return
 
+        stage = self.dialogs[user.stage]
         if message.lower() not in stage['keys']:
             self.api.messages.send(peer_id=user.id, random_id=0, message='Неверная команда')
             return
