@@ -18,9 +18,9 @@ class VkBot:
         while True:
             try:
                 for event in await self.longpoll.check():
-                    if event.type == VkBotEventType.MESSAGE_NEW and event.message and event.message['text'][0] == '/':
+                    if event.type == VkBotEventType.MESSAGE_NEW and event.message:
                         user = await self.load_user(event.message['peer_id'])
-                        await self.handle_command(user, event.message['text'][1:])
+                        await self.handle_command(user, event.message['text'])
 
             except Exception as ex:
                 log('main_handler', ex)
